@@ -7,8 +7,8 @@
 #
 TDIR="/data/moloch"
 if [ "$#" -gt 0 ]; then
-TDIR="$1"
-echo "Installing to ${TDIR}"
+  TDIR="$1"
+  echo "Installing to ${TDIR}"
 fi
 
 
