@@ -6,7 +6,7 @@
 #  Created by John Farese on 8/8/14.
 #
 TDIR="/data/moloch"
-if [ "$#" -gt 0 ]; then
+if [ "$#" -gt 1 ]; then
 TDIR="$1"
 echo "Installing to ${TDIR}"
 fi
