@@ -5,6 +5,16 @@
 #
 #  Created by John Farese on 8/8/14.
 #
+apt-get -y install apt-transport-https
+
+##Java
+add-apt-repository ppa:webupd8team/java -y 
+
+##Elasticsearch
+wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
+echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+
+
 TDIR="/data/moloch"
 if [ "$#" -gt 0 ]; then
 TDIR="$1"
@@ -59,7 +69,9 @@ exit
 fi
 
 if [ -f "/etc/debian_version" ]; then
-apt-get install openjdk-7-jdk
+echo debconf shared/accepted-oracle-license-v1-1 select true | \
+  sudo debconf-set-selections
+apt-get install oracle-java7-installer -y
 if [ $? -ne 0 ]; then
 echo "ERROR - 'apt-get install openjdk-7-jdk' failed"
 exit
@@ -133,14 +145,17 @@ mkdir -p ${TDIR}/db
 echo "MOLOCH: Downloading and installing elastic search"
 cd ${INSTALL_DIR}/thirdparty
 if [ ! -f "elasticsearch-${ES}.tar.gz" ]; then
-wget http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${ES}.tar.gz
+apt-get install -y elasticsearch
+systemctl daemon-reload 
+systemctl enable elasticsearch.service
+systemctl start elasticsearch.service 
 fi
 
 cd ${TDIR}
 tar xfz ${INSTALL_DIR}/thirdparty/elasticsearch-${ES}.tar.gz
 cd elasticsearch-${ES}
-./bin/plugin -install mobz/elasticsearch-head
-./bin/plugin -install lukas-vlcek/bigdesk
+./bin/elasticsearch-plugin install mobz/elasticsearch-head
+./bin/bin/elasticsearch-plugin install lukas-vlcek/bigdesk
 
 
 # NodeJS
