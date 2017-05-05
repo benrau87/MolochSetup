@@ -11,7 +11,7 @@ apt-get -y install apt-transport-https
 add-apt-repository ppa:webupd8team/java -y 
 
 #Nodejs
-curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+#curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 
 ##Elasticsearch
 wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
