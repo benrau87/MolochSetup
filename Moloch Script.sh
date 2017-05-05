@@ -10,6 +10,9 @@ apt-get -y install apt-transport-https
 ##Java
 add-apt-repository ppa:webupd8team/java -y 
 
+#Nodejs
+curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+
 ##Elasticsearch
 wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
 echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
@@ -23,8 +26,8 @@ echo "Installing to ${TDIR}"
 fi
 
 
-ES=1.1.2
-NODEJS=0.10.28
+ES=5.4
+NODEJS=6.10.3
 INSTALL_DIR=$PWD
 
 if [ "$(id -u)" != "0" ]; then
@@ -144,7 +147,6 @@ mkdir -p ${TDIR}/db
 
 # ElasticSearch
 echo "MOLOCH: Downloading and installing elastic search"
-cd ${INSTALL_DIR}/thirdparty
 if [ ! -f "elasticsearch-${ES}.tar.gz" ]; then
 apt-get install -y elasticsearch
 systemctl daemon-reload 
@@ -152,11 +154,9 @@ systemctl enable elasticsearch.service
 systemctl start elasticsearch.service 
 fi
 
-cd ${TDIR}
-tar xfz ${INSTALL_DIR}/thirdparty/elasticsearch-${ES}.tar.gz
-cd elasticsearch-${ES}
-./bin/elasticsearch-plugin install mobz/elasticsearch-head
-./bin/bin/elasticsearch-plugin install lukas-vlcek/bigdesk
+#cd /usr/share/elasticsearch/bin/
+#elasticsearch-plugin install mobz/elasticsearch-head
+#elasticsearch-plugin install lukas-vlcek/bigdesk
 
 
 # NodeJS
