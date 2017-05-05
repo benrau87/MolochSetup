@@ -14,6 +14,7 @@ add-apt-repository ppa:webupd8team/java -y
 wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
 echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
 
+apt-get update
 
 TDIR="/data/moloch"
 if [ "$#" -gt 0 ]; then
@@ -61,7 +62,7 @@ which java
 JAVA_VAL=$?
 
 if [ $JAVA_VAL -ne 0 ]; then
-echo -n "java command not found, real Java 7 is recommended for large install, however would you like to install openjdk 7 now? [yes] "
+echo -n "java command not found, real Java 8 is recommended for this install, would you like to install it now? [yes] "
 read INSTALLJAVA
 if [ -n "$INSTALLJAVA" -a "x$INSTALLJAVA" != "xyes" ]; then
 echo "Install java and try again"
@@ -73,7 +74,7 @@ echo debconf shared/accepted-oracle-license-v1-1 select true | \
   sudo debconf-set-selections
 apt-get install oracle-java7-installer -y
 if [ $? -ne 0 ]; then
-echo "ERROR - 'apt-get install openjdk-7-jdk' failed"
+echo "ERROR - 'apt-get install java7' failed"
 exit
 fi
 elif [ -f "/etc/redhat-release" ]; then
