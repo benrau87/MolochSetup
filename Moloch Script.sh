@@ -115,6 +115,15 @@ sleep 1
 PFRING="--pfring"
 fi
 
+# ElasticSearch
+echo "MOLOCH: Downloading and installing elastic search"
+if [ ! -f "elasticsearch-${ES}.tar.gz" ]; then
+apt-get install -y elasticsearch
+systemctl daemon-reload 
+systemctl enable elasticsearch.service
+systemctl start elasticsearch.service 
+fi
+
 # Building thirdparty libraries and moloch
 echo ./easybutton-build.sh --dir "$TDIR" $PFRING
 ./easybutton-build.sh --dir "$TDIR" $PFRING
@@ -142,21 +151,6 @@ mkdir -p ${TDIR}/raw
 mkdir -p ${TDIR}/etc
 mkdir -p ${TDIR}/bin
 mkdir -p ${TDIR}/db
-
-
-
-# ElasticSearch
-echo "MOLOCH: Downloading and installing elastic search"
-if [ ! -f "elasticsearch-${ES}.tar.gz" ]; then
-apt-get install -y elasticsearch
-systemctl daemon-reload 
-systemctl enable elasticsearch.service
-systemctl start elasticsearch.service 
-fi
-
-#cd /usr/share/elasticsearch/bin/
-#elasticsearch-plugin install mobz/elasticsearch-head
-#elasticsearch-plugin install lukas-vlcek/bigdesk
 
 
 # NodeJS
